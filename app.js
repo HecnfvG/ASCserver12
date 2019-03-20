@@ -9,9 +9,8 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
-
+// add config
 const config = require('./config');
-
 
 // add ruoter
 const routes = require('./routes');
