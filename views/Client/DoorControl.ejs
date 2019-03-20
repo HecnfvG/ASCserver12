@@ -1,0 +1,25 @@
+<% include ./layout/header.ejs%>
+<% include ./layout/Menu.ejs%>
+<h1>Управление замком</h1>
+<form  method="post" name="DoorOpen">
+    <input type="submit" value="Откртыть дверь" />
+</form>
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script>
+    $("form").submit(function(e) {
+
+        $.ajax({
+            type: "POST",
+            url: "/Client/DoorOpen",
+            data: JSON.stringify({client: '<%=client%>'}),
+            dataType: "json",
+            contentType: "application/json"
+        }).done(function(data) {
+            console.log(data);
+            $(location).attr('href', '/Client/Settings');
+        })
+    });
+</script>
+
+<% include ./layout/footer.ejs%>

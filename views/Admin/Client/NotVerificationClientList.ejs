@@ -1,0 +1,69 @@
+<% include ../layout/header.ejs%>
+<% include ../menu.ejs%>
+<h1>Неактивные клиенты</h1>
+<table>
+    <% clients.forEach(function(client){ %>
+    <tr>
+        <td>
+            Login:
+            <%= client.login %>
+        </td>
+        <td>
+            Password:
+            <%= client.password %><br/>
+        </td>
+        <td>
+            <button class='proveClient' data-id='<%= client.id %>'>Добавить клиента</button>
+        </td>
+        <td>
+            <button class='altogetherDeleteClient' data-id='<%= client.id %>'>Совсем удалить</button>
+        </td>
+    </tr>
+    <% }); %>
+</table>
+
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script>
+
+    // удаление Клиента
+    function AltogetherDeleteClient(id) {
+        $.ajax({
+            type: "POST",
+            url: "/Admin/Client/altogetherDeleteClient",
+            data: JSON.stringify({id: id}),
+            dataType: "json",
+            contentType: "application/json"
+        }).done(function(data) {
+            console.log(data);
+            $(location).attr('href', '/Admin/NotVerificationClientList');
+        })
+    }
+
+    // подтверждение клиента
+    function ProveClient(id) {
+        $.ajax({
+            type: "POST",
+            url: "/Admin/Client/proveClient",
+            data: JSON.stringify({id: id}),
+            dataType: "json",
+            contentType: "application/json"
+        }).done(function(data) {
+            console.log(data);
+            $(location).attr('href', '/Admin/NotVerificationClientList');
+        })
+    }
+
+    // нажимаем на ссылку Подтвердить
+    $("body").on("click", ".proveClient", function () {
+        var id = $(this).data("id");
+        ProveClient(id);
+    })
+    // нажимаем на ссылку Удалить
+    $("body").on("click", ".altogetherDeleteClient", function () {
+        var id = $(this).data("id");
+        AltogetherDeleteClient(id);
+    })
+
+</script>
+<% include ../layout/footer.ejs%>

@@ -1,0 +1,35 @@
+<% include ./layout/header.ejs%>
+<% include ./layout/Menu.ejs%>
+
+<h1>Новый заказ</h1>
+<form method="post" name="addOrder">
+    <label>Клиент</label></br>
+    <input type="text" name="clientPhNumber" /></br></br>
+    <label>Описание заказа</label></br>
+    <input type="text" name="orderDescription" /></br></br>
+    <input type="submit" value="Добавить заказ" />
+</form>
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script>
+    $("form").submit(function(e) {
+
+        e.preventDefault();
+        const addOrderForm = document.forms["addOrder"];
+        const clientPhNumber = addOrderForm.elements["clientPhNumber"].value;
+        const orderDescription = addOrderForm.elements["orderDescription"].value;
+
+        $.ajax({
+            type: "POST",
+            url: "/Service/AddOrder",
+            data: JSON.stringify({clientPhNumber: clientPhNumber, orderDescription: orderDescription}),
+            dataType: "json",
+            contentType: "application/json"
+        }).done(function(data) {
+            console.log(data);
+            $(location).attr('href', '/Service');
+        })
+    });
+</script>
+
+<% include ./layout/footer.ejs%>

@@ -1,0 +1,29 @@
+<% include ./layout/header.ejs%>
+<h1>Вход</h1>
+<form method="post" name="serviceEnter">
+    <label>Логин</label></br>
+    <input type="text" name="serviceLogin" /></br></br>
+    <label>Пароль</label></br>
+    <input type="text" name="servicePassword" /></br></br>
+    <input type="submit" value="Войти" />
+</form>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script>
+    $("form").submit(function(e) {
+        e.preventDefault();
+        const serviceEnterForm = document.forms["serviceEnter"];
+        const serviceLogin = serviceEnterForm.elements["serviceLogin"].value;
+        const servicePassword = serviceEnterForm.elements["servicePassword"].value;
+        $.ajax({
+            type: "POST",
+            url: "/Service/Enter",
+            data: JSON.stringify({serviceLogin: serviceLogin, servicePassword: servicePassword}),
+            dataType: "json",
+            contentType: "application/json"
+        }).done(function(data) {
+            console.log(data);
+            $(location).attr('href', '/Service');
+        })
+    });
+</script>
+<% include ./layout/footer.ejs%>

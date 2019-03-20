@@ -1,0 +1,48 @@
+<% include ../layout/header.ejs%>
+<% include ../menu.ejs%>
+<h1>Активные клиенты</h1>
+<table>
+    <% clients.forEach(function(client){ %>
+    <tr>
+        <td>
+            Login:
+            <%= client.login %>
+        </td>
+        <td>
+            Password:
+            <%= client.password %><br/>
+        </td>
+        <td>
+            <button class='deleteClient' data-id='<%= client.id %>'>Удалить</button>
+        </td>
+    </tr>
+    <% }); %>
+</table>
+
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script>
+
+    // удаление Клиента
+    function DeleteClient(id) {
+        $.ajax({
+            type: "POST",
+            url: "/Admin/Client/deleteClient",
+            data: JSON.stringify({id: id}),
+            dataType: "json",
+            contentType: "application/json"
+        }).done(function(data) {
+            console.log(data);
+            $(location).attr('href', '/Admin/ClientList');
+        })
+    }
+
+
+    // нажимаем на ссылку Удалить
+    $("body").on("click", ".deleteClient", function () {
+        var id = $(this).data("id");
+        DeleteClient(id);
+    })
+
+</script>
+<% include ../layout/footer.ejs%>

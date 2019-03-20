@@ -1,0 +1,29 @@
+<% include ./layout/header.ejs%>
+<h1>Вход</h1>
+<form method="post" name="clientEnter">
+    <label>Логин</label></br>
+    <input type="text" name="clientLogin" /></br></br>
+    <label>Пароль</label></br>
+    <input type="text" name="clientPassword" /></br></br>
+    <input type="submit" value="Войти" />
+</form>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script>
+    $("form").submit(function(e) {
+        e.preventDefault();
+        const clientEnterForm = document.forms["clientEnter"];
+        const clientLogin = clientEnterForm.elements["clientLogin"].value;
+        const clientPassword = clientEnterForm.elements["clientPassword"].value;
+        $.ajax({
+            type: "POST",
+            url: "/Client/Enter",
+            data: JSON.stringify({clientLogin: clientLogin, clientPassword: clientPassword}),
+            dataType: "json",
+            contentType: "application/json"
+        }).done(function(data) {
+            console.log(data);
+            $(location).attr('href', '/Client');
+        })
+    });
+</script>
+<% include ./layout/footer.ejs%>

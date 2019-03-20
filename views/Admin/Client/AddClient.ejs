@@ -1,0 +1,35 @@
+<% include ../layout/header.ejs%>
+<% include ../menu.ejs%>
+
+<h1>Новый клиент</h1>
+<form method="post" name="addClient">
+    <label>Логин</label></br>
+    <input type="text" name="clientLogin" /></br></br>
+    <label>Пароль</label></br>
+    <input type="text" name="clientPassword" /></br></br>
+    <input type="submit" value="Добавить клиента" />
+</form>
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script>
+    $("form").submit(function(e) {
+
+        e.preventDefault();
+        const addClientForm = document.forms["addClient"];
+        const clientLogin = addClientForm.elements["clientLogin"].value;
+        const clientPassword = addClientForm.elements["clientPassword"].value;
+
+        $.ajax({
+            type: "POST",
+            url: "/Admin/AddClient",
+            data: JSON.stringify({clientLogin: clientLogin, clientPassword: clientPassword}),
+            dataType: "json",
+            contentType: "application/json"
+        }).done(function(data) {
+            console.log(data);
+            $(location).attr('href', '/Admin');
+        })
+    });
+</script>
+
+<% include ../layout/footer.ejs%>

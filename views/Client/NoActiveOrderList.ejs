@@ -1,0 +1,73 @@
+<% include ./layout/header.ejs%>
+<% include ./layout/Menu.ejs%>
+
+<h1>Неактивные заказы</h1>
+<table>
+    <% orders.forEach(function(order){ %>
+    <tr>
+        <td>
+            Клиент:
+            <%= order.clientPhNumber %>
+        </td>
+        <td>
+            Описание заказа:
+            <%= order.description %><br/>
+        </td>
+        <td>
+            <button class='deleteOrder' data-id='<%= order.id %>'>Удалить заказз</button>
+        </td>
+        <td>
+            <button class='activateOrder' data-id='<%= order.id %>'>Подтвердить</button>
+        </td>
+    </tr>
+    <% }); %>
+</table>
+
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script>
+
+    // удаление заказа
+    function DeleteOrder(id) {
+        $.ajax({
+            type: "POST",
+            url: "/Service/deleteNoActiveOrder",
+            data: JSON.stringify({id: id}),
+            dataType: "json",
+            contentType: "application/json"
+        }).done(function(data) {
+            console.log(data);
+            $(location).attr('href', '/Client/ActiveOrderList');
+        })
+    }
+
+    // подтверждение заказа
+    function ActivateOrder(id) {
+        $.ajax({
+            type: "POST",
+            url: "/Client/ActivateOrder",
+            data: JSON.stringify({id: id}),
+            dataType: "json",
+            contentType: "application/json"
+        }).done(function(data) {
+            console.log(data);
+            $(location).attr('href', '/Client/ActiveOrderList');
+        })
+    }
+
+
+    // нажимаем на ссылку Удалить
+    $("body").on("click", ".deleteOrder", function () {
+        var id = $(this).data("id");
+        DeleteOrder(id);
+    })
+
+    // нажимаем на ссылку подтвердить
+    $("body").on("click", ".activateOrder", function () {
+        var id = $(this).data("id");
+        ActivateOrder(id);
+    })
+
+</script>
+
+<% include ./layout/footer.ejs%>

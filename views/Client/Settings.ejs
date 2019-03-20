@@ -1,0 +1,69 @@
+<% include ./layout/header.ejs%>
+<% include ./layout/Menu.ejs%>
+<h1>Настройка пользовательских данных</h1>
+<form  method="post" name="setSettings">
+    <label>Имя</label></br>
+    <input type="text" name="clientName" value="<%= client.clientName %>"/></br></br>
+    <label>Фамилиия</label></br>
+    <input type="text" name="clientLastName" value="<%= client.clientLastName %>"/></br></br>
+    <label>Моб.Телефон</label></br>
+    <input type="text" name="clientPhNumber" value="<%= client.clientPhNumber %>"/></br></br>
+    <label>Email</label></br>
+    <input type="text" name="clientEmail" value="<%= client.clientEmail %>"/></br></br>
+    <label>Адрес доставки</label></br></br>
+    <label>Город</label></br>
+    <input type="text" name="city" value="<%= client.clientAddress.city %>"/></br></br>
+    <label>Улица</label></br>
+    <input type="text" name="street" value="<%= client.clientAddress.street %>"/></br></br>
+    <label>Номер дома</label></br>
+    <input type="text" name="house" value="<%= client.clientAddress.house %>"/></br></br>
+    <label>Номер квартиры</label></br>
+    <input type="text" name="apartment" value="<%= client.clientAddress.apartment %>"/></br></br>
+    <label>Подъезд</label></br>
+    <input type="text" name="entrance" value="<%= client.clientAddress.entrance %>"/></br></br>
+    <label>Этаж</label></br>
+    <input type="text" name="floor" value="<%= client.clientAddress.floor %>"/></br></br>
+    <input type="submit" value="Изменить данные" />
+</form>
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script>
+    $("form").submit(function(e) {
+
+        e.preventDefault();
+        const setSettingsForm = document.forms["setSettings"];
+        const clientName = setSettingsForm.elements["clientName"].value;
+        const clientLastName = setSettingsForm.elements["clientLastName"].value;
+        const clientPhNumber = setSettingsForm.elements["clientPhNumber"].value;
+        const clientEmail = setSettingsForm.elements["clientEmail"].value;
+        const city = setSettingsForm.elements["city"].value;
+        const street = setSettingsForm.elements["street"].value;
+        const house = setSettingsForm.elements["house"].value;
+        const apartment = setSettingsForm.elements["apartment"].value;
+        const entrance = setSettingsForm.elements["entrance"].value;
+        const floor = setSettingsForm.elements["floor"].value;
+
+
+        $.ajax({
+            type: "POST",
+            url: "/Client/SetSettings",
+            data: JSON.stringify({clientName: clientName,
+                clientLastName: clientLastName,
+                clientPhNumber: clientPhNumber,
+                clientEmail: clientEmail,
+                city: city,
+                street: street,
+                house: house,
+                apartment: apartment,
+                entrance: entrance,
+                floor: floor}),
+            dataType: "json",
+            contentType: "application/json"
+        }).done(function(data) {
+            console.log(data);
+            $(location).attr('href', '/Client/Settings');
+        })
+    });
+</script>
+
+<% include ./layout/footer.ejs%>

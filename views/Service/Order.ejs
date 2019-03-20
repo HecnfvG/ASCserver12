@@ -1,0 +1,49 @@
+<% include ./layout/header.ejs%>
+<% include ./layout/Menu.ejs%>
+
+<table>
+    <tr>
+        <td>
+            Клиент:
+            <%= order.clientPhNumber %>
+        </td>
+        <td>
+            Описание заказа:
+            <%= order.description %><br/>
+        </td>
+        <td>
+            <form method="post" name="doorOpen">
+        <label>Логин</label></br>
+        <input type="text" name="serviceLogin" /></br></br>
+            </form>
+        </td>
+        <td>
+            <button class='openDoor' data-id='<%= order.id %>'>Открыь дверь</button>
+        </td>
+    </tr>
+</table>
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script>
+
+    $("form").submit(function(e) {
+        e.preventDefault();
+        const doorOpenForm = document.forms["doorOpen"];
+        const externalID = doorOpenForm.elements["externalID"].value;
+        const orderID = '<%= order.id %>';
+        $.ajax({
+            type: "POST",
+            url: "/Service/DoorOpen",
+            data: JSON.stringify({externalID: externalID, orderID: orderID}),
+            dataType: "json",
+            contentType: "application/json"
+        }).done(function(data) {
+            console.log(data);
+            $(location).attr('href', '/Service/ActiveOrderList');
+        })
+    });
+
+</script>
+
+
+<% include ./layout/footer.ejs%>

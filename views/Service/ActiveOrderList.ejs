@@ -1,0 +1,55 @@
+<% include ./layout/header.ejs%>
+<% include ./layout/Menu.ejs%>
+
+<h1>Активные заказы</h1>
+<table>
+    <% orders.forEach(function(order){ %>
+    <tr>
+        <td>
+            Клиент:
+            <%= order.clientPhNumber %>
+        </td>
+        <td>
+            Описание заказа:
+            <%= order.description %><br/>
+        </td>
+        <td>
+            <button class='deleteOrder' data-id='<%= order.id %>'>Удалить</button>
+        </td>
+        <td>
+            <form action="/Service/Order/<%= order.id %>">
+                <button type="submit">Управление</button>
+            </form>
+        </td>
+    </tr>
+    <% }); %>
+</table>
+
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script>
+
+    // удаление заказа
+    function DeleteOrder(id) {
+        $.ajax({
+            type: "POST",
+            url: "/Service/deleteActiveOrder",
+            data: JSON.stringify({id: id}),
+            dataType: "json",
+            contentType: "application/json"
+        }).done(function(data) {
+            console.log(data);
+            $(location).attr('href', '/Service/ActiveOrderList');
+        })
+    }
+
+
+    // нажимаем на ссылку Удалить
+    $("body").on("click", ".deleteOrder", function () {
+        var id = $(this).data("id");
+        DeleteOrder(id);
+    })
+
+</script>
+
+<% include ./layout/footer.ejs%>

@@ -1,0 +1,48 @@
+<% include ../layout/header.ejs%>
+<% include ../menu.ejs%>
+<h1>Активные сервисы</h1>
+<table>
+    <% services.forEach(function(service){ %>
+    <tr>
+        <td>
+            Login:
+            <%= service.login %>
+        </td>
+        <td>
+            Password:
+            <%= service.password %><br/>
+        </td>
+        <td>
+            <button class='deleteService' data-id='<%= service.id %>'>Удалить сервис</button>
+        </td>
+    </tr>
+    <% }); %>
+</table>
+
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script>
+
+    // удаление Сервиса
+    function DeleteService(id) {
+        $.ajax({
+            type: "POST",
+            url: "/Admin/Service/deleteService",
+            data: JSON.stringify({id: id}),
+            dataType: "json",
+            contentType: "application/json"
+        }).done(function(data) {
+            console.log(data);
+            $(location).attr('href', '/Admin/ServiceList');
+        })
+    }
+
+
+    // нажимаем на ссылку Удалить
+    $("body").on("click", ".deleteService", function () {
+        const id = $(this).data("id");
+        DeleteService(id);
+    })
+
+</script>
+<% include ../layout/footer.ejs%>
