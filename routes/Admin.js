@@ -56,8 +56,8 @@ router.get('/NotVerificationClientList', async(req, res, next) => {
      if(req.session.AdminLogin && req.session.AdminPassword) {
          const Login = req.body.clientLogin;
          const Password = req.body.clientPassword;
+         const ExternalID = Math.floor(Math.random() * 1000);
          try {
-             let ExternalID = Math.floor(Math.random * 1000);
              await models.Client.create({
                      login: Login,
                      password: Password,

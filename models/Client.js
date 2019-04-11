@@ -12,51 +12,41 @@ const schema = new Schema(
             type: String,
             required: true
         },
-        //
         clientPhNumber: {
             type: String,
             required: true
         },
-        //
         clientEmail: {
             type: String,
         },
-        //
         clientName: {
             type: String,
         },
-        //
         clientLastName: {
             type: String,
         },
         clientAddress: {
-            //
             city: {
                 type: String,
             },
-            //
             street: {
                 type: String,
             },
-            //
             house: {
                 type: String,
             },
-            //
             apartment: {
                 type: String,
             },
-            //
             entrance: {
                 type: String,
             },
-            //
             floor: {
                 type: String,
             }
         },
         clientExternalID: {
-            type: Number
+            type: String
         },
         clientESP: {
             login: {
